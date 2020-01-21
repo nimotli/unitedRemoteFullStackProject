@@ -25,6 +25,6 @@ class UserShop(db.Model):
     user = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     shop = db.Column(db.Integer, db.ForeignKey('shop.id'),nullable=False)
     interraction = db.Column(db.Integer)
-
+#for creating the data base
 def createDB():
     db.create_all()

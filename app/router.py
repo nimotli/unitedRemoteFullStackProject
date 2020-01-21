@@ -1,3 +1,4 @@
+#a router that contains all the needed routes for the API
 from app import app
 from flask import render_template,request,make_response,jsonify
 import app.controllers.userController as userController
