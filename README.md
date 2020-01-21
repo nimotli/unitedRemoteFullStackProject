@@ -23,7 +23,19 @@ The authentication uses JWT:\
 - When a user signs in a JWT token gets created 
 - For all the actions that require a signin the token needs to be sent in the header alongside the required data
 - to logout the token needs to be destroyed
-
+## Install
+- To run the app you need python installed.
+- the clone this repo
+- cd to it
+- run this
+```
+pip install -r requirements.txt
+```
+- and then 
+```
+python main.py
+```
+- in your browser go to localhost:5000/home
 # User
 ## Sign up 
 --------

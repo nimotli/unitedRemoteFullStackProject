@@ -3,7 +3,17 @@
 {% block content %}
 <div class="container">
     <form action="/user" method="post">
+        {% if data %}
+            <div class="alert alert-danger my-3" role="alert">
+                <ul>
+                {% for error in data %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         <div class="row border m-3 py-3">
+            
             <div class="col-md-3 py-2">
                 <label for="email">Email</label>
             </div>
@@ -20,7 +30,7 @@
                 <label for="cpw">Confirm Password</label>
             </div>
             <div class="col-md-9 py-2">
-                <input type="text" name="cPassword" id="cpw" class="form-control" required>
+                <input type="password" name="cPassword" id="cpw" class="form-control" required>
             </div>
             <div class="col-md-3 py-2">
                 <label for="name">Name</label>

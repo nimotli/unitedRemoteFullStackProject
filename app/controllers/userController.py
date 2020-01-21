@@ -2,7 +2,7 @@ from app import app,db
 import app.models as models
 import uuid
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask import jsonify,make_response,redirect,url_for
+from flask import jsonify,make_response,redirect,url_for,render_template
 import jwt #for the jwt token needed for auth
 import datetime #for token experation
 from validate_email import validate_email
@@ -14,22 +14,22 @@ def createUser(user):
     users = models.User.query.all()
     #check if the email is unique
     for usr in users:
-        if usr.email == user.email:
+        if usr.email == user['email']:
             errors.append('Email taken')
             break
     #check if the email is valid
-    if not validate_email(user.email):
+    if not validate_email(user['email']):
         errors.append('Email is not valid')
     #check if the password is valid
-    if len(user.password) < 6:
+    if len(user['password']) < 6:
         errors.append('Password is short')
     #check if the password and confirmation match
-    if user.password != user.cPassword:
+    if user['password'] != user['cPassword']:
         errors.append('Password and confirmation does not match')
     #if there are any errors return the errors with a state of failure
     if len(errors) > 0:
         returnData = jsonify({'state':'failure','errors':errors})
-        return returnData
+        return render_template('register.html',data = errors)
     #encrypt the password
     hashedPw = generate_password_hash(user['password'],method='sha256')
     #format the position

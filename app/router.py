@@ -39,7 +39,8 @@ def getUsers(current_user):
 @app.route('/user',methods=['POST'])
 def createUser():
     data = request.form
-    return userController.createUser(data)
+    userData = userController.createUser(data)
+    return userData
 #Get a user
 @app.route('/user/<userId>',methods=['GET'])
 @needToken
