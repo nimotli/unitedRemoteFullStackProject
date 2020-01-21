@@ -28,27 +28,39 @@
             </form>
         </div>
     </div>
-    <div class="row" id="shopsContainer">
-        shopData
+    <div class="row">
+        <div class="col-md-6 offset-md-3" id="shopsContainer">
+            
     </div>
 </div>
 {% endblock %}
 {% block scripts %}
 {{ super()}}
 <script>
-$(document).ready(function(){
-    $('#alertBox').hide()
+//$(document).ready(function(){
+$('#alertBox').hide()
+function verifylogIn()
+{
     if(Cookies.get('authToken') == undefined )
     {
         $('#loginContainer').show()
         $('#shopsContainer').hide()
+        $('#signinBtn').show()
+        $('#signupBtn').show()
+        $('#loggedin').hide()
     }
     else
     {
         $('#loginContainer').hide()
         $('#shopsContainer').show()
+        $('#signinBtn').hide()
+        $('#signupBtn').hide()
+        $('#loggedin').show()
+        getShopsData();
     }
-})
+}
+verifylogIn()
+//})
 function login(event)
 {
     event.preventDefault();
@@ -57,7 +69,7 @@ function login(event)
 
     $.ajax(
     {
-        url: "/signin",
+        url: "/home",
         type: "POST",
         data: { 
             email: email ,
@@ -76,6 +88,9 @@ function login(event)
                 //send request to get shops
                 $('#loginContainer').hide()
                 $('#shopsContainer').show()
+                //$('#shopsContainer').text(response.token)
+                verifylogIn()
+                getShopsData();
                 //show shops
             }
         },
@@ -92,20 +107,48 @@ function getShopsData()
     token = Cookies.get('authToken')
     $.ajax(
     {
-        url: "/signin",
-        type: "POST",
-        data: { 
-            email: email ,
-            password: password
-        },
+        url: "/shop",
+        type: "GET",
         headers: {"accessToken": token},
         success: function (response) 
         {
             if (response.message != null)
             {
+                $('#alertBox').text(response.message)
+                $('#alertBox').show()
             }
             else
             {
+                $('#loginContainer').hide()
+                $('#shopsContainer').show()
+                data = response['shops']
+                $('#shopsContainer').text("")
+                data.forEach(shop => {
+                    $('#shopsContainer').append(
+                        '<div class="row border my-2 align-items-center">'+
+                            '<div class="col-md-3 border-right">'+
+                                '<img class="img-fluid rounded float-left" src="{{ url_for("static", filename="img/shop.png") }}">'+
+                            '</div>'+
+                            '<div class="col-md-7 border-right">'+
+                                '<div class="row border-bottom">'+
+                                    '<div class="col-md-12 py-2">'+
+                                        shop.name+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="row">'+
+                                    '<div class="col-md-12 py-2">'+
+                                        shop.shopType+' | '+shop.position+' km away'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-2">'+
+                                '<button class="btn btn-primary" onclick=like('+shop.id+',this)>Like</button>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+                    )
+                });
+                //$('#shopsContainer').text(JSON.stringify(response))
             }
         },
         error: function(jqXHR, textStatus, errorThrown)
@@ -114,5 +157,30 @@ function getShopsData()
         }
     });
 }
+
+function like(shopId,button)
+{
+    $(button).prop("disabled",true);
+    token = Cookies.get('authToken')
+    $.ajax(
+    {
+        url: "/like",
+        type: "POST",
+        data:{
+            shopId:shopId
+        },
+        headers: {"accessToken": token},
+        success: function (response) 
+        { 
+            $(button).parent().parent().hide(300)
+            $(button).parent().parent().remove(300)
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log(textStatus, errorThrown);
+        }
+    })
+}
+
 </script>
 {% endblock %}

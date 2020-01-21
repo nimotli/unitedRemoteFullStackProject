@@ -19,7 +19,6 @@ class Shop(db.Model):
     name = db.Column(db.String(50))
     shopType = db.Column(db.String(50))
     position = db.Column(db.String(50))
-
 #for the interractions of the users with the shops (like,dislike)
 class UserShop(db.Model):
     id = db.Column(db.Integer, primary_key=True)

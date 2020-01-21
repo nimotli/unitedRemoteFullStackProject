@@ -50,7 +50,9 @@
 {% block scripts %}
 {{ super()}}
 <script>
-
+    $('#signinBtn').show()
+    $('#signupBtn').show()
+    $('#loggedin').hide()
     if(Cookies.get('authToken') != undefined )
     {
         window.location.replace("{{ url_for('login') }}");
