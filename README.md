@@ -1,4 +1,4 @@
-## About
+# About
 The tables i've userd are 
     -User that contains email and password for auth, name  and positionn as a 2D coordinates "x-y"
     -Shop it contains shop name, shop type and position as a 2D coordinates "x-y"
@@ -12,14 +12,14 @@ Since the project requirement didn't specify where i should the coordinates or t
 
 PS: the mockups for the fullstack projects are broken so i had to emprovise and making good locking UI was never my strong point so i just used bootsrap to make stuff responsive and called it a day
 for the backend i used python and flask i tryed to give it an MVC pattern and i also used a REST architecture so the front end and back end are completelty seperated.
-# Authentication
+## Authentication
 The authentication uses JWT:
     -When a user signs in a JWT token gets created 
     -For all the actions that require a signin the token needs to be sent in the header alongside the required data
     -to logout the token needs to be destroyed
 
-## User
-# Sign up 
+# User
+## Sign up 
 --------
 POST /user/add
 INPUT
@@ -35,7 +35,7 @@ OUTPUT
     'state':'success or failure',
     'errors':['error 1','error 2']
 }
-# Sign in
+## Sign in
 ----------
 POST /home
 INPUT
@@ -47,7 +47,7 @@ OUTPUT
 {
     'accessToken':'the jwt token',
 }
-# Get All Users
+## Get All Users
 ----------
 GET /user
 HEADER
@@ -64,7 +64,7 @@ OUTPUT
         'position':''},{}...
     ],
 }
-# Get User by public id
+## Get User by public id
 ----------
 GET /user/<userId>
 HEADER
@@ -82,7 +82,7 @@ OUTPUT
     'name':'',
     'position':''
 }
-# DELETE User by public id
+## DELETE User by public id
 ----------
 DELETE /user/<userId>
 HEADER
@@ -98,9 +98,9 @@ OUTPUT
     'message':'deleted',
     'state':'success/failure',
 }
-## Shop
+# Shop
 
-# Get all shops
+## Get all shops
 ----------
 GET /shop
 HEADER
@@ -115,7 +115,7 @@ OUTPUT
         'position':''},{},...
     ]
 }
-# Get a shop
+## Get a shop
 ----------
 GET /shop/<shopid>
 HEADER
@@ -132,7 +132,7 @@ OUTPUT
     'name':'',
     'position':''
 }
-# Like a shop
+## Like a shop
 ----------
 POST /like
 HEADER
@@ -148,9 +148,9 @@ OUTPUT
     'state':'success/failure',
     'message':'liked',
 }
-## UserShops
+# UserShops
 this table is to keep track of which shop has been liked by which user (since its a many to many ralation a third table is needed)
-# Get all UserShop
+## Get all UserShop
 GET /userShop
 HEADER
 {
