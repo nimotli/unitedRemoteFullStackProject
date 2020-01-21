@@ -1,0 +1,23 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}This is an example page{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-fixed-top">
+    <button class="btn" onclick="logout()">logout</button>
+</div>
+{% endblock %}
+
+{% block content %}
+  <h1>Hello, Bootstrap</h1>
+{% endblock %}
+{% block scripts %}
+{{ super()}}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+<script>
+function logout()
+{
+    Cookies.remove('authToken')
+    window.location.href = "{{ url_for('login') }}";
+}
+</script>
+{% endblock %}

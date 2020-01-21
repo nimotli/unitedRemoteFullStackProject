@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask import jsonify,make_response
 import jwt #for the jwt token needed for auth
 import datetime #for token experation
+
 def createUser(user):
     errors=[]
     #validate data
@@ -61,6 +62,7 @@ def login(auth):
     if not user:
         return jsonify({'message':'No user with that email!'})#return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="No user with that email!"'})
     if check_password_hash(user.password, auth['password']):
-        token = jwt.JWT().encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        exp = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        token = jwt.encode({'public_id' : user.public_id, 'exp' : exp}, app.config['SECRET_KEY'])
         return jsonify({'token' : token.decode('UTF-8')})
     return jsonify({'message':'wrong password'})#return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="wrong password"'})

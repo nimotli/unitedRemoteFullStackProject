@@ -1,16 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <form action="/login" method="post">
-        email: <input type="email" name="email" id="email" required><br>
-        password: <input type="password" name="password" id="password"><br>
-        <input type="submit" value="login">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row" id="loginContainer">
+        <div class="col-md-6 offset-md-3">
+            <div class="alert alert-danger" role="alert" id="alertBox">
+            </div>
+            <form action="/user" method="post">
+                <div class="row border m-3 py-3">
+                    <div class="col-md-3 py-2">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="col-md-9 py-2">
+                        <input type="email" name="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="col-md-3 py-2">
+                        <label for="password">password</label>
+                    </div>
+                    <div class="col-md-9 py-2">
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+                    <div class="col-md-2 offset-md-5 py-3 py-2">
+                        <button class="btn btn-primary" onclick="login(event)">Sign up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="shopsContainer">
+        shopData
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super()}}
+<script>
+$(document).ready(function(){
+    $('#alertBox').hide()
+    if(Cookies.get('authToken') == undefined )
+    {
+        $('#loginContainer').show()
+        $('#shopsContainer').hide()
+    }
+    else
+    {
+        $('#loginContainer').hide()
+        $('#shopsContainer').show()
+    }
+})
+function login(event)
+{
+    event.preventDefault();
+    email = $('#email').val();
+    password = $('#password').val();
+
+    $.ajax(
+    {
+        url: "/signin",
+        type: "POST",
+        data: { 
+            email: email ,
+            password: password
+        },
+        success: function (response) 
+        {
+            if (response.message != null)
+            {
+                $('#alertBox').text(response.message)
+                $('#alertBox').show()
+            }
+            else
+            {
+                Cookies.set('authToken', response.token)
+                //send request to get shops
+                $('#loginContainer').hide()
+                $('#shopsContainer').show()
+                //show shops
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log(textStatus, errorThrown);
+        }
+        //headers: {"accessToken": "test-value"}
+    });
+}
+
+function getShopsData()
+{
+    token = Cookies.get('authToken')
+    $.ajax(
+    {
+        url: "/signin",
+        type: "POST",
+        data: { 
+            email: email ,
+            password: password
+        },
+        headers: {"accessToken": token},
+        success: function (response) 
+        {
+            if (response.message != null)
+            {
+            }
+            else
+            {
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log(textStatus, errorThrown);
+        }
+    });
+}
+</script>
+{% endblock %}
