@@ -1,5 +1,4 @@
 ## About
-# Schema
 The tables i've userd are 
     -User that contains email and password for auth, name  and positionn as a 2D coordinates "x-y"
     -Shop it contains shop name, shop type and position as a 2D coordinates "x-y"
@@ -11,6 +10,8 @@ The distance (needed for displaying the shops) is calculated as follow:
 
 Since the project requirement didn't specify where i should the coordinates or the distance, i thaught i'd get them as an attribute of the shop and the user, but the better solution would have been getting the location data from the user the getting the nearby shop using google API and then calculate the distance and sort.
 
+PS: the mockups for the fullstack projects are broken so i had to emprovise and making good locking UI was never my strong point so i just used bootsrap to make stuff responsive and called it a day
+for the backend i used python and flask i tryed to give it an MVC pattern and i also used a REST architecture so the front end and back end are completelty seperated.
 # Authentication
 The authentication uses JWT:
     -When a user signs in a JWT token gets created 
